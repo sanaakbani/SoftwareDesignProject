@@ -53,7 +53,7 @@ const SignUpPage = () => {
           </button>
         </div>
         <div>
-          <p>Already have an account? <Link href="/login"><span className="text-blue-500 cursor-pointer">Sign In</span></Link></p>
+          <p>Already have an account? <Link href="/"><span className="text-blue-500 cursor-pointer">Sign In</span></Link></p>
         </div>
       </div>
     </div>
