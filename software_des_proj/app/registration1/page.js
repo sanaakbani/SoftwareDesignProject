@@ -100,7 +100,7 @@ function MemberProfile() {
         
       </form>
 
-<a href="/calc">Go to Next Page</a>
+<a href="/Calc">Go to Next Page</a>
     </div>
   );
 }
