@@ -26,18 +26,21 @@ const LoginPage = () => {
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           placeholder="Username"
-          className="border border-gray-300 rounded-md px-3 py-2"
+          className="border border-gray-300 rounded-md px-3 py-2 text-black"
         />
         <input
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Password"
-          className="border border-gray-300 rounded-md px-3 py-2"
+          className="border border-gray-300 rounded-md px-3 py-2 text-black"
         />
         {error && <p className="text-red-500">{error}</p>}
         <div className="flex gap-4">
-          <button onClick={handleLogin} className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded cursor-pointer">
+          <button
+            onClick={handleLogin}
+            className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded cursor-pointer"
+          >
             Login
           </button>
           <Link href="/signIN">
