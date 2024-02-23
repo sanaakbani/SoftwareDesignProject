@@ -59,7 +59,7 @@ const MemberProfile = () => {
     // Submit the form data
     console.log('Form submitted:', {
       fullName,
-      addregitss1,
+      address1,
       address2,
       city,
       state,
