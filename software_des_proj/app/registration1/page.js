@@ -67,7 +67,7 @@ const MemberProfile = () => {
     });
 
     // Redirect to the next page (For demo purposes, redirecting to /calc)
-    window.location.href = '/Calc';
+    window.location.href = '/calc';
   };
 
   return (
