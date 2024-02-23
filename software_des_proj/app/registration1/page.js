@@ -19,10 +19,33 @@ const MemberProfile = () => {
       return;
     }
 
-    // Validate City as alphabetical characters only
-    const cityPattern = /^[A-Za-z\s]+$/;
-    if (!cityPattern.test(city)) {
-      alert('City must contain only alphabetical characters.');
+    // Validate Full Name length (50 characters)
+    if (fullName.length > 50) {
+      alert('Full Name must be at most 50 characters.');
+      return;
+    }
+
+    // Validate Address 1 length (100 characters)
+    if (address1.length > 100) {
+      alert('Address 1 must be at most 100 characters.');
+      return;
+    }
+
+    // Validate Address 2 length (100 characters)
+    if (address2.length > 100) {
+      alert('Address 2 must be at most 100 characters.');
+      return;
+    }
+
+    // Validate City length (100 characters)
+    if (city.length > 100) {
+      alert('City must be at most 100 characters.');
+      return;
+    }
+
+    // Validate Zip Code length (at least 5 characters)
+    if (zipCode.length < 5 || zipCode.length > 9) {
+      alert('Zip Code must be between 5 and 9 characters.');
       return;
     }
 
@@ -59,6 +82,7 @@ const MemberProfile = () => {
             value={fullName}
             onChange={(e) => setFullName(e.target.value)}
             required
+            maxLength="50"
             className="border border-gray-300 rounded-md px-3 py-2 text-black mt-1"
           />
         </div>
@@ -70,6 +94,7 @@ const MemberProfile = () => {
             value={address1}
             onChange={(e) => setAddress1(e.target.value)}
             required
+            maxLength="100"
             className="border border-gray-300 rounded-md px-3 py-2 text-black mt-1"
           />
         </div>
@@ -80,6 +105,7 @@ const MemberProfile = () => {
             id="address2"
             value={address2}
             onChange={(e) => setAddress2(e.target.value)}
+            maxLength="100"
             className="border border-gray-300 rounded-md px-3 py-2 text-black mt-1"
           />
         </div>
@@ -91,6 +117,7 @@ const MemberProfile = () => {
             value={city}
             onChange={(e) => setCity(e.target.value)}
             required
+            maxLength="100"
             className="border border-gray-300 rounded-md px-3 py-2 text-black mt-1"
           />
         </div>
@@ -165,6 +192,8 @@ const MemberProfile = () => {
             onChange={(e) => setZipCode(e.target.value)}
             required
             pattern="\d+"
+            minLength="5"
+            maxLength="9"
             className="border border-gray-300 rounded-md px-3 py-2 text-black mt-1"
           />
         </div>
