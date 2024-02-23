@@ -1,9 +1,8 @@
-"use client";
-
+'use client'; // Client-side rendering
 import React, { useState } from 'react';
-import styles from './page.css';
+import { Link } from 'next/link';
 
-function MemberProfile() {
+const MemberProfile = () => {
   const [fullName, setFullName] = useState('');
   const [address1, setAddress1] = useState('');
   const [address2, setAddress2] = useState('');
@@ -20,6 +19,20 @@ function MemberProfile() {
       return;
     }
 
+    // Validate City as alphabetical characters only
+    const cityPattern = /^[A-Za-z\s]+$/;
+    if (!cityPattern.test(city)) {
+      alert('City must contain only alphabetical characters.');
+      return;
+    }
+
+    // Validate Zip Code as integers only
+    const zipCodePattern = /^\d+$/;
+    if (!zipCodePattern.test(zipCode)) {
+      alert('Zip Code must contain only digits.');
+      return;
+    }
+
     // Submit the form data
     console.log('Form submitted:', {
       fullName,
@@ -29,80 +42,138 @@ function MemberProfile() {
       state,
       zipCode,
     });
+
+    // Redirect to the next page (For demo purposes, redirecting to /calc)
+    window.location.href = '/Calc';
   };
 
   return (
-    <div className="container">
-      <h1>Member Profile</h1>
-      <form onSubmit={handleSubmit}>
+    <div className="flex flex-col items-center justify-center min-h-screen">
+      <h1 className="text-3xl font-bold mb-4">Member Profile</h1>
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <div className="form-group">
-          <label htmlFor="fullName">Full Name:</label>
+          <label htmlFor="fullName" className="mb-1 mr-2">Full Name:</label>
           <input
             type="text"
             id="fullName"
             value={fullName}
             onChange={(e) => setFullName(e.target.value)}
             required
+            className="border border-gray-300 rounded-md px-3 py-2 text-black mt-1"
           />
         </div>
         <div className="form-group">
-          <label htmlFor="address1">Address 1:</label>
+          <label htmlFor="address1" className="mb-1 mr-2">Address 1:</label>
           <input
             type="text"
             id="address1"
             value={address1}
             onChange={(e) => setAddress1(e.target.value)}
             required
+            className="border border-gray-300 rounded-md px-3 py-2 text-black mt-1"
           />
         </div>
         <div className="form-group">
-          <label htmlFor="address2">Address 2:</label>
+          <label htmlFor="address2" className="mb-1 mr-2">Address 2:</label>
           <input
             type="text"
             id="address2"
             value={address2}
             onChange={(e) => setAddress2(e.target.value)}
+            className="border border-gray-300 rounded-md px-3 py-2 text-black mt-1"
           />
         </div>
         <div className="form-group">
-          <label htmlFor="city">City:</label>
+          <label htmlFor="city" className="mb-1 mr-2">City:</label>
           <input
             type="text"
             id="city"
             value={city}
             onChange={(e) => setCity(e.target.value)}
             required
+            className="border border-gray-300 rounded-md px-3 py-2 text-black mt-1"
           />
         </div>
         <div className="form-group">
-          <label htmlFor="state">State:</label>
-          <select id="state" value={state} onChange={(e) => setState(e.target.value)} required>
+          <label htmlFor="state" className="mb-1 mr-2">State:</label>
+          <select
+            id="state"
+            value={state}
+            onChange={(e) => setState(e.target.value)}
+            required
+            className="border border-gray-300 rounded-md px-3 py-2 text-black mt-1"
+          >
             <option value="">Select a state...</option>
             <option value="AL">Alabama</option>
             <option value="AK">Alaska</option>
             <option value="AZ">Arizona</option>
-            {/* ... other US states */}
+            <option value="AR">Arkansas</option>
+            <option value="CA">California</option>
+            <option value="CO">Colorado</option>
+            <option value="CT">Connecticut</option>
+            <option value="DE">Delaware</option>
+            <option value="FL">Florida</option>
+            <option value="GA">Georgia</option>
+            <option value="HI">Hawaii</option>
+            <option value="ID">Idaho</option>
+            <option value="IL">Illinois</option>
+            <option value="IN">Indiana</option>
+            <option value="IA">Iowa</option>
+            <option value="KS">Kansas</option>
+            <option value="KY">Kentucky</option>
+            <option value="LA">Louisiana</option>
+            <option value="ME">Maine</option>
+            <option value="MD">Maryland</option>
+            <option value="MA">Massachusetts</option>
+            <option value="MI">Michigan</option>
+            <option value="MN">Minnesota</option>
+            <option value="MS">Mississippi</option>
+            <option value="MO">Missouri</option>
+            <option value="MT">Montana</option>
+            <option value="NE">Nebraska</option>
+            <option value="NV">Nevada</option>
+            <option value="NH">New Hampshire</option>
+            <option value="NJ">New Jersey</option>
+            <option value="NM">New Mexico</option>
+            <option value="NY">New York</option>
+            <option value="NC">North Carolina</option>
+            <option value="ND">North Dakota</option>
+            <option value="OH">Ohio</option>
+            <option value="OK">Oklahoma</option>
+            <option value="OR">Oregon</option>
+            <option value="PA">Pennsylvania</option>
+            <option value="RI">Rhode Island</option>
+            <option value="SC">South Carolina</option>
+            <option value="SD">South Dakota</option>
+            <option value="TN">Tennessee</option>
+            <option value="TX">Texas</option>
+            <option value="UT">Utah</option>
+            <option value="VT">Vermont</option>
+            <option value="VA">Virginia</option>
+            <option value="WA">Washington</option>
+            <option value="WV">West Virginia</option>
+            <option value="WI">Wisconsin</option>
             <option value="WY">Wyoming</option>
           </select>
         </div>
         <div className="form-group">
-          <label htmlFor="zipCode">Zip Code:</label>
+          <label htmlFor="zipCode" className="mb-1 mr-2">Zip Code:</label>
           <input
             type="text"
             id="zipCode"
             value={zipCode}
             onChange={(e) => setZipCode(e.target.value)}
             required
+            pattern="\d+"
+            className="border border-gray-300 rounded-md px-3 py-2 text-black mt-1"
           />
         </div>
-        
-        <button type="submit"href="/calc">Save and Continue</button>
-        
+        <button type="submit" className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded cursor-pointer mt-2">
+          Save and Continue
+        </button>
       </form>
-
-<a href="/Calc">Go to Next Page</a>
     </div>
   );
-}
+};
 
 export default MemberProfile;
