@@ -7,17 +7,37 @@ const SignUpPage = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
-
-  const handleSignUp = () => {
+  var x;
+  const handleSignUp = async () => {
+    
     if (password !== confirmPassword) {
       setError("Passwords don't match. Please try again.");
       setPassword('');
       setConfirmPassword('');
     } else {
-      // Implement sign-up functionality
-      console.log('Signed up successfully with username:', username, 'and password:', password);
-      // Redirect to a link (For demo purposes, redirecting to example.com)
-      window.location.href = '/registration1';
+      try {
+        const response = await fetch('http://localhost:8000/subscribers/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ "Username": username, "Password": password })
+        });
+        x = response.status;
+        if (response.status === 201) {
+          // If registration is successful, redirect to the login page
+          if (confirm("Registration successful. You will now be redirected to the login page to sign in.")) {
+            window.location.href = '/'; 
+          }
+        } else {
+          const data = await response.json();
+          setError(data.message);
+          setUsername(''); // Clear username field for retrying
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        setError("BRUHBRUH" +x);
+      }
     }
   };
 
@@ -60,4 +80,4 @@ const SignUpPage = () => {
   );
 };
 
-export default SignUpPage;
+export default SignUpPage
