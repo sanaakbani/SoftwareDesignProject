@@ -1,6 +1,6 @@
 'use client'; // Client-side rendering
 import Link from 'next/link';
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 const SignUpPage = () => {
   const [username, setUsername] = useState('');
