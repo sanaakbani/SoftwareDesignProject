@@ -1,74 +1,134 @@
 'use client'; // Client-side rendering
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'next/link';
 
+
+
 const MemberProfile = () => {
+
   const [fullName, setFullName] = useState('');
   const [address1, setAddress1] = useState('');
   const [address2, setAddress2] = useState('');
   const [city, setCity] = useState('');
   const [state, setState] = useState('');
   const [zipCode, setZipCode] = useState('');
+  const [username, setUsername] = useState('');
 
-  const handleSubmit = (event) => {
+
+  useEffect(() => {
+    // Fetch user data from the server if username is provided in the URL
+    if (typeof window !== 'undefined') {
+      const queryParams = new URLSearchParams(window.location.search);
+      const usernameParam = queryParams.get('username');
+      if (usernameParam) {
+        setUsername(usernameParam);
+        fetchUserData(usernameParam);
+      }
+    }
+  }, []);
+
+
+const fetchUserData = async (username) => {
+    try {
+      const response = await fetch(`http://localhost:8000/subscribers/username/${username}`);
+      if (response.ok) {
+        const userData = await response.json();
+        setFullName(userData.name || '');
+        setAddress1(userData.Address1 || '');
+        setAddress2(userData.Address2 || '');
+        setCity(userData.City || '');
+        setState(userData.State || '');
+        setZipCode(userData.Zipcode ? userData.Zipcode.toString() : '');
+      } else {
+        throw new Error('Failed to fetch user data.');
+      }
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+      // Handle error
+    }
+  };
+
+  
+
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
-
+    
     // Validation
     if (!fullName || !address1 || !state || !city || !zipCode) {
       alert('Please fill in all required fields.');
       return;
     }
-
+  
     // Validate Full Name length (50 characters)
     if (fullName.length > 50) {
       alert('Full Name must be at most 50 characters.');
       return;
     }
-
+  
     // Validate Address 1 length (100 characters)
     if (address1.length > 100) {
       alert('Address 1 must be at most 100 characters.');
       return;
     }
-
+  
     // Validate Address 2 length (100 characters)
     if (address2.length > 100) {
       alert('Address 2 must be at most 100 characters.');
       return;
     }
-
+  
     // Validate City length (100 characters)
     if (city.length > 100) {
       alert('City must be at most 100 characters.');
       return;
     }
-
+  
     // Validate Zip Code length (at least 5 characters)
     if (zipCode.length < 5 || zipCode.length > 9) {
       alert('Zip Code must be between 5 and 9 characters.');
       return;
     }
-
+  
     // Validate Zip Code as integers only
     const zipCodePattern = /^\d+$/;
     if (!zipCodePattern.test(zipCode)) {
       alert('Zip Code must contain only digits.');
       return;
     }
-
+  
     // Submit the form data
-    console.log('Form submitted:', {
-      fullName,
-      address1,
-      address2,
-      city,
-      state,
-      zipCode,
-    });
-
-    // Redirect to the next page (For demo purposes, redirecting to /calc)
-    window.location.href = '/calc';
+    try {
+      const response = await fetch(`http://localhost:8000/subscribers/username/${username}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          name: fullName,
+          Address1: address1,
+          Address2: address2,
+          City: city,
+          State: state,
+          Zipcode: zipCode
+        })
+      });
+  
+      if (response.ok) {
+        console.log('Subscriber information updated successfully.');
+        // Redirect to the next page after successful submission
+        window.location.href = `/calc?username=${username}`;
+      } else {
+        const data = await response.json();
+        console.error('Error:', data.message);
+        // Handle error response
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      // Handle network error
+    }
   };
+  
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">

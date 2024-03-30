@@ -1,6 +1,6 @@
 'use client'; // Client-side rendering
 import Link from 'next/link';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const LoginPage = () => {
   const [gallons, setGallons] = useState('');
@@ -33,11 +33,6 @@ const LoginPage = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   },[username]);
-
-  
-
-
-  
 
   const fetchHistory = async (username) => {
     try {
@@ -79,15 +74,14 @@ const LoginPage = () => {
   };
 
   const calculate = async () => {
-    if (isNaN(gallons)) {
+    const parsedGallons = parseFloat(gallons);
+    const parsedDate = parseFloat(date);
+
+    if (isNaN(gallons) || isNaN(date)) {
      
       alert('Please enter valid numeric values for Gallons and Delivery Date.');
       return;
     }
-   
-
-    const parsedGallons = parseFloat(gallons);
-    const parsedDate = parseFloat(date);
 
     if (parsedGallons <= 0 || parsedDate <= 0) {
       alert('Gallons and Delivery Date must be greater than zero.');
@@ -139,7 +133,9 @@ const LoginPage = () => {
         <div className="flex-auto">
           <div className="flex flex-col gap-4">
             <div className="flex flex-row gap-4">
-              <label>Gallons:</label>
+              <label>Gallons:
+              <input name="gallons" type="text" />
+              </label>
               <input
                 type="text"
                 value={gallons}
@@ -149,11 +145,15 @@ const LoginPage = () => {
               />
             </div>
             <div className="flex flex-row gap-4">
-              <label>Address:</label>
+              <label>Address:
+              <input name="address" type="text" />
+              </label>
               <p>{deliveryAddress}</p>
             </div>
             <div className="flex flex-row gap-4">
-              <label>Delivery Date:</label>
+              <label>Delivery Date:
+              <input name="date" type="text" />
+              </label>
               <input
                 type="date"
                 value={date}
@@ -171,11 +171,15 @@ const LoginPage = () => {
         <div className="flex-auto">
           <div className="flex flex-col gap-4">
             <div className="flex flex-row gap-4">
-              <label>Suggested Price:</label>
+              <label>Suggested Price:
+              <input name="price" type="text" />
+              </label>
               <p>{suggestedPrice.toFixed(2)}/gal</p>
             </div>
             <div className="flex flex-row gap-4">
-              <label>Total Due:</label>
+              <label>Total Due:
+              <input name="total" type="text" />
+              </label>
               <p>{total}</p>
             </div>
             <button

@@ -1,0 +1,30 @@
+GET http://localhost:8000/subscribers
+
+###
+
+POST http://localhost:8000/subscribers
+Content-Type: application/json
+
+{
+    "Username": "Anish",
+    "Password": "Bahl"
+
+}
+
+###
+
+
+DELETE http://localhost:8000/subscribers
+
+###
+
+POST http://localhost:8000/subscribers/register
+Content-Type: application/json
+
+{
+    "Username" : "AAA",
+    "Password" : "AAA"
+}
+
+###
+GET http://localhost:8000/subscribers
