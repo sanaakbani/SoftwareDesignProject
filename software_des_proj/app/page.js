@@ -1,19 +1,33 @@
 'use client'; // Client-side rendering
 import Link from 'next/link';
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 const LoginPage = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-  const handleLogin = () => {
-    if (username === 'anish' && password === 'bruh') {
-      // Implement login functionality (For demo purposes, just console logging)
-      window.location.href = 'https://example.com';
-      console.log('Logged in successfully with username:', username);
-    } else {
-      setError('Incorrect username or password. If not registered Click Sign in Button');
+  const handleLogin = async () => {
+    try {
+      const response = await fetch('http://localhost:8000/subscribers/validate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ Username: username, Password: password })
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        // If validation is successful, navigate to the second page
+        window.location.href = `/registration1?username=${username}`;
+      } else {
+        setError('Incorrect username or password. If not registered Click Sign in Button');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      setError('An error occurred while trying to log in.');
     }
   };
 
