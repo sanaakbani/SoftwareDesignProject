@@ -2,27 +2,35 @@ const mongoose = require('mongoose');
 
 // for previous entries
 const previousEntriesSchema = new mongoose.Schema({
-  gallonsRequested: {
-    type: Number,
-    required: true
-  },
-  deliveryAddress: {
+  Username: {
     type: String,
-    required: true
+    required: true,
+    unique: true
   },
-  deliveryDate: {
-    type: Date,
-    required: true
-  },
-  suggestedPricePerGallon: {
-    type: Number,
-    required: true
-  },
-  totalAmountDue: {
-    type: Number,
-    required: true
-  }
+  entries: [{
+    gallonsRequested: {
+      type: Number,
+      required: true
+    },
+    deliveryAddress: {
+      type: String,
+      required: true
+    },
+    deliveryDate: {
+      type: Date,
+      required: true
+    },
+    suggestedPricePerGallon: {
+      type: Number,
+      required: true
+    },
+    totalAmountDue: {
+      type: Number,
+      required: true
+    }
+  }]
 });
+
 
 
 //user info
@@ -31,10 +39,6 @@ const subscriberSchema = new mongoose.Schema({
     type: String,
     required: true,
     unique: true
-  },
-  Password: {
-    type: String,
-    required: true
   },
   name: {
     type: String,
@@ -64,9 +68,29 @@ const subscriberSchema = new mongoose.Schema({
     type: Number,
     required: false,
     default: 0
-  },
-  previousEntries: [previousEntriesSchema]
+  }
+
 
 });
 
-module.exports = mongoose.model('Subscriber', subscriberSchema);
+
+const Credentials = new mongoose.Schema({
+  Username: {
+    type: String,
+    required: true,
+    unique: true
+  },
+  Password: {
+    type: String,
+    required: true
+  }
+});
+
+module.exports = {
+  Subscriber: mongoose.model('Subscriber', subscriberSchema),
+  Credentials: mongoose.model('Credentials', credentialsSchema),
+  PreviousEntries: mongoose.model('PreviousEntries', previousEntriesSchema)
+};
+
+
+
