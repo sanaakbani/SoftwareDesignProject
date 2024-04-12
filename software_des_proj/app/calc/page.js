@@ -77,7 +77,7 @@ const LoginPage = () => {
     const parsedGallons = parseFloat(gallons);
     const parsedDate = parseFloat(date);
 
-    if (isNaN(gallons) || isNaN(date)) {
+    if (isNaN(gallons)) {
      
       alert('Please enter valid numeric values for Gallons and Delivery Date.');
       return;
@@ -134,7 +134,6 @@ const LoginPage = () => {
           <div className="flex flex-col gap-4">
             <div className="flex flex-row gap-4">
               <label>Gallons:
-              <input name="gallons" type="text" />
               </label>
               <input
                 type="text"
@@ -146,13 +145,11 @@ const LoginPage = () => {
             </div>
             <div className="flex flex-row gap-4">
               <label>Address:
-              <input name="address" type="text" />
               </label>
               <p>{deliveryAddress}</p>
             </div>
             <div className="flex flex-row gap-4">
               <label>Delivery Date:
-              <input name="date" type="text" />
               </label>
               <input
                 type="date"
@@ -172,13 +169,11 @@ const LoginPage = () => {
           <div className="flex flex-col gap-4">
             <div className="flex flex-row gap-4">
               <label>Suggested Price:
-              <input name="price" type="text" />
               </label>
               <p>{suggestedPrice.toFixed(2)}/gal</p>
             </div>
             <div className="flex flex-row gap-4">
               <label>Total Due:
-              <input name="total" type="text" />
               </label>
               <p>{total}</p>
             </div>
