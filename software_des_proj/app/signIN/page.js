@@ -36,7 +36,7 @@ const SignUpPage = () => {
         }
       } catch (error) {
         console.error('Error:', error);
-        setError("BRUHBRUH" +x);
+        setError("Error in Registration");
       }
     }
   };
