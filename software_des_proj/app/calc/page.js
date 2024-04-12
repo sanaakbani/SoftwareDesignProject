@@ -39,7 +39,12 @@ const LoginPage = () => {
       const response = await fetch(`http://localhost:8000/subscribers/username/${username}/history`);
       if (response.ok) {
         const data = await response.json();
-        setHistory(data);
+       
+        for (let i = 0; i < data[0].entries.length; i++) {
+          data[0].entries[i].deliveryDate = data[0].entries[i].deliveryDate.substring(0, 10);
+      }
+
+        setHistory(data[0].entries);
       } else {
         throw new Error('Failed to fetch history.');
       }
