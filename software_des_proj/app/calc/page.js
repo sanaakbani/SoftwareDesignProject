@@ -175,7 +175,7 @@ const LoginPage = () => {
             <div className="flex flex-row gap-4">
               <label>Suggested Price:
               </label>
-              <p>{suggestedPrice.toFixed(2)}/gal</p>
+              <p>{suggestedPrice}/gal</p>
             </div>
             <div className="flex flex-row gap-4">
               <label>Total Due:
@@ -199,7 +199,7 @@ const LoginPage = () => {
         <div className="flex flex-row gap-4">
           <select onChange={handleSelectChange} className="border border-gray-300 rounded-md px-3 py-2 text-black">
             <option value="">Select History</option>
-            {history.slice().reverse().map((entry, index) => (
+            {history.slice().map((entry, index) => (
               <option key={index} value={index}>
                 {`${entry.gallonsRequested} gallons, ${entry.deliveryAddress}, ${entry.deliveryDate}, $${entry.totalAmountDue}`}
               </option>
