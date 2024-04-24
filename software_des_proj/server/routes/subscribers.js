@@ -162,8 +162,10 @@ router.post('/calculate/:username', async (req, res) => {
   try {
     const { gallonsRequested, deliveryAddress, deliveryDate } = req.body;
     const { username } = req.params;
+    const state = await Subscriber.findOne({ Username: username });
+    const history = await PreviousEntries.findOne({ Username: username });
 
-    const suggestedPricePerGallon = calculateSuggestedPrice(gallonsRequested, deliveryAddress, deliveryDate);
+    const suggestedPricePerGallon = calculateSuggestedPrice(gallonsRequested, state.State, deliveryDate, history.entries);
     const totalAmountDue = calculateTotalAmount(gallonsRequested, suggestedPricePerGallon);
 
     // Create the entry object
@@ -199,16 +201,23 @@ router.post('/calculate/:username', async (req, res) => {
 });
 
 
-// Function to calculate suggested price per gallon based on client data (example calculation)
-function calculateSuggestedPrice(gallonsRequested, deliveryAddress, deliveryDate) {
-  // Example calculation logic (replace with your actual calculation)
-  return gallonsRequested * 1.5; // Just an arbitrary example
+// Function to calculate suggested price per gallon based on client data
+function calculateSuggestedPrice(gallonsRequested, deliveryAddress, deliveryDate, history) {
+  const currentPricePerGallon = 1.50; // Constant
+  const locationFactor = deliveryAddress.includes('TX') ? 0.02 : 0.04;
+  const rateHistoryFactor = history.length > 0 ? 0.01 : 0;
+  const gallonsRequestedFactor = gallonsRequested > 1000 ? 0.02 : 0.03;
+  const companyProfitFactor = 0.10;
+
+  const margin = currentPricePerGallon * (locationFactor - rateHistoryFactor + gallonsRequestedFactor + companyProfitFactor);
+  const suggestedPricePerGallon = currentPricePerGallon + margin;
+  return suggestedPricePerGallon.toFixed(2);
 }
 
-// Function to calculate total amount due based on client data (example calculation)
+// Function to calculate total amount due based on client data
 function calculateTotalAmount(gallonsRequested, suggestedPricePerGallon) {
-  // Example calculation logic (replace with your actual calculation)
-  return gallonsRequested * suggestedPricePerGallon; // Just an arbitrary example
+  const totalAmount = gallonsRequested * suggestedPricePerGallon;
+  return totalAmount.toFixed(2);
 }
 
 module.exports = router;
