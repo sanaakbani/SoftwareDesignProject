@@ -20,6 +20,7 @@ const previousEntriesSchema = new mongoose.Schema({
     },
     deliveryAddress: {
       type: String,
+      maxlength: 100,
       required: true
     },
     deliveryDate: {
@@ -48,20 +49,24 @@ const subscriberSchema = new mongoose.Schema({
   },
   name: {
     type: String,
+    maxlength: 50,
     required: false
   },
   Address1: {
     type: String,
+    maxlength: 100,
     required: false,
     default: ''
   },
   Address2: {
     type: String,
+    maxlength: 100,
     required: false,
     default: ''
   },
   City: {
     type: String,
+    maxlength: 100,
     required: false,
     default: ''
   },
@@ -73,10 +78,13 @@ const subscriberSchema = new mongoose.Schema({
   Zipcode: {
     type: Number,
     required: false,
-    default: 0
+    validate: {
+      validator: function(v) {
+        return /^[0-9]{5,9}$/.test(v.toString());
+      },
+      message: props => `${props.value} is not a valid zipcode!`
+    }
   }
-
-
 });
 
 
@@ -96,7 +104,7 @@ const Credentials = new mongoose.Schema({
 Credentials.pre('save', function(next) {
   const credentials = this;
   // Check if password has been modified or it's a new document
-  if (!credentials.isModified('EncryptedPassword')) return next();
+  if (!credentials.isModified('Password')) return next();
   
   // Create a cipher using AES-256-CBC algorithm with encryption key and IV
   const cipher = crypto.createCipheriv('aes-256-cbc', encryptionKey, initializationVector);
@@ -105,7 +113,7 @@ Credentials.pre('save', function(next) {
   let encryptedPassword = cipher.update(credentials.Password, 'utf8', 'hex');
   encryptedPassword += cipher.final('hex');
   
-  // Update the EncryptedPassword field with the encrypted password
+  // Update the Password field with the encrypted password
   credentials.Password = encryptedPassword;
   next();
 });
@@ -117,6 +125,3 @@ module.exports = {
   encryptionKey,
   initializationVector
 };
-
-
-
