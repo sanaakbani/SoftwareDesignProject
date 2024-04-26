@@ -77,8 +77,26 @@ router.get('/username/:username/address1', async (req, res) => {
 // PATCH request to update subscriber by username
 router.patch('/username/:username', getSubscriberByUsername, async (req, res) => {
   try {
+    
     const subscriber = res.subscriber;
     const updatedFields = { ...req.body };
+    if(updatedFields.name.length >50){
+      res.status(400).json({ message: "Name too long" });
+    }
+    if(updatedFields.Address1.length >50){
+      res.status(400).json({ message: "Address1 too long" });
+    }
+    if(updatedFields.Address2.length >50){
+      res.status(400).json({ message: "Address2 too long" });
+    }
+    if(updatedFields.City.length >50){
+      res.status(400).json({ message: "City too long" });
+    }
+    if(updatedFields.Zipcode.length >9 || updatedFields.Zipcode.length <5){
+      res.status(400).json({ message: "ZipCode must be between 5 or 9" });
+    }
+    
+
     delete updatedFields.Username; // Prevent updating the username
     await Subscriber.updateOne({ Username: subscriber.Username }, { $set: updatedFields });
     res.json({ message: 'Subscriber updated successfully' });
